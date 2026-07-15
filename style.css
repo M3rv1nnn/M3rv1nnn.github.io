@@ -1,0 +1,48 @@
+.page{
+    width:85vw;
+    height:80vh;
+    border:1px solid cyan;
+    padding:20px;
+}
+
+nav ul li{
+    display:inline;
+}
+
+#page1{
+    background:grey;
+}
+
+#page2{
+    background:lightgrey;
+}
+
+#page3{
+    background:grey;
+}
+
+/* Responsive Menu */
+
+#hamIcon{
+    display:none;
+}
+
+@media (max-width:800px){
+
+    nav ul li{
+        display:block;
+    }
+
+    #hamIcon{
+        display:block;
+    }
+
+    nav ul{
+        display:none;
+    }
+
+}
+
+.menuShow{
+    display:block;
+}
