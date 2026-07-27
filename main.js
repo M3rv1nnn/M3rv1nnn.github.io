@@ -39,29 +39,19 @@ function hideall(){
 function show(pgno){
     hideall();
     let onepage = document.querySelector("#page"+pgno);
-    onepage.style.display = "block";
-    
-    // Start tracking the boxes on the newly opened page again
-    const activeBoxes = onepage.querySelectorAll('details');
-    activeBoxes.forEach(box => scrollObserver.observe(box));
+    if (onepage) {
+        onepage.style.display = "block";
+        // Start tracking the boxes on the newly opened page again
+        const activeBoxes = onepage.querySelectorAll('details');
+        activeBoxes.forEach(box => scrollObserver.observe(box));
+    }
 }
 
-// Event Listeners for Page Navigation
-page1btn.addEventListener("click", function(){
-    show(1);
-});
-
-page2btn.addEventListener("click", function(){
-    show(2);
-});
-
-page3btn.addEventListener("click", function(){
-    show(3);
-});
-
-page4btn.addEventListener("click", function(){
-    show(4);
-});
+// Event Listeners for Page Navigation (Safeguarded with checks)
+if (page1btn) page1btn.addEventListener("click", function() { show(1); });
+if (page2btn) page2btn.addEventListener("click", function() { show(2); });
+if (page3btn) page3btn.addEventListener("click", function() { show(3); });
+if (page4btn) page4btn.addEventListener("click", function() { show(4); });
 
 // To refresh the page using the main title dolphin without clicking refresh 
 const mainTitle = document.querySelector("#main-title");
@@ -76,7 +66,8 @@ const hamIcon = document.querySelector("#hamIcon");
 const navUl = document.querySelector("nav ul");
 
 if (hamIcon && navUl) {
-    hamIcon.addEventListener("click", function() {
+    hamIcon.addEventListener("click", function(e) {
+        e.preventDefault(); // Stops the browser from treating it like a standard link
         navUl.classList.toggle("menuShow");
         
         if (navUl.classList.contains("menuShow")) {
@@ -86,8 +77,8 @@ if (hamIcon && navUl) {
         }
     });
 
-    // Auto-close menu when a link inside it is pressed
-    const menuButtons = document.querySelectorAll("nav#button ul button");
+    // Safe auto-close: Targets any clickable button or link directly inside the nav menu list
+    const menuButtons = navUl.querySelectorAll("button, a");
     menuButtons.forEach(btn => {
         btn.addEventListener("click", function() {
             navUl.classList.remove("menuShow");
@@ -95,9 +86,6 @@ if (hamIcon && navUl) {
         });
     });
 }
-
-
-
 
 
 
