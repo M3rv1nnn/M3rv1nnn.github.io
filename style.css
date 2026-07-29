@@ -4,6 +4,7 @@ body {
     background-position: center;
     background-attachment: fixed;
     background-color: #e0f2f1;
+	  
 }
 
 
@@ -12,10 +13,29 @@ body {
     margin: 0 auto; 
     min-height:80vh;
     border:1px;
-    padding:20px;   
+    padding:20px; 
 }
-h2{color:white; font-size: 2.1rem;}
-#semi-title{color:white;}
+#Echolocation, 
+#BodyLanguage, 
+#BottleNose, 
+#Orca,
+#Amazon,
+#Maui,
+#Pollution,
+#Habitat,
+#Reduce,
+#Support{
+    display: block;       
+    margin: 20px auto;     
+    max-width: 100%;     
+    width: 450px;          
+    height: auto;         
+    padding-left: 0;     
+}
+
+
+h2{color:white; font-size: 2.5rem;}
+#semi-title{color:white;font-size: 20px;}
 #main-title{text-align:center;background-color:#00B4D8;color:white; cursor: pointer;font-size: 3.1rem;}
 
 #button{display: flex;
@@ -145,7 +165,6 @@ details.show {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 15px;
-    border-bottom: 2px dashed rgba(255, 255, 255, 0.4);
     margin-bottom: 15px;
 }
 
@@ -157,7 +176,7 @@ details.show {
 
 #start-stop-btn {
     background-color: #ffffff;
-    color: #00b4d8;
+    color: Black;
     border: 2px solid black;
     padding: 8px 18px;
     font-size: 1rem;
@@ -214,4 +233,119 @@ details.show {
         width: 100%; /* makes the ocean size bigger for mobile so the game playing will be easier*/
         height: 50vh;
     }
+}
+
+
+/* QUIZ SECTION STYLING */
+
+#Quiz{color:white;}
+
+
+fieldset {
+    border: none;
+    background-color:#FFFFFF26
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+	 font-size: 1.2rem;
+}
+
+legend {
+    color: white;
+	Background-color:#00A3C4;
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 0;
+    margin-bottom: 12px;
+    float: left; 
+    width: 100%;
+}
+/*so the options look more clear on smaller device*/
+fieldset label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Submit Button Aesthetics */
+#btnSubmit,
+#btnRetry{
+    background-color: #ffffff;
+    color: #2c3e50;
+    border: 2px solid black;
+    padding: 10px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#btnSubmit:hover,
+#btnRetry:hover{
+    background-color: #2c3e50;
+    color: white;
+}
+
+
+
+
+/* Scorebox Layout */
+#scorebox {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+
+/*FOR THE CLICKABLE LINKS BELOW THE PAGES*/
+
+
+#Links{
+    color:white ;          
+   font-size: 30px;  
+font-weight: bold;   
+}
+
+.custom-link {
+    color: #ffffff;             
+    font-size: 20px;           
+    text-decoration: none;    
+    font-weight: 500;         
+    transition: opacity 0.2s; 
+}
+	
+
+.custom-link:hover {
+    opacity: 0.85;    
+    text-decoration:underline;
+}
+
+/*AUDIO FOR DOLPHIN SOUNDS DESIGN */
+
+#burstPulsePlayBtn,
+#dolphinPlayBtn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #0077b6;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+
+}
+
+#burstPulsePlayBtn:hover{
+  background: #005f96; 
 }
