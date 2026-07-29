@@ -61,6 +61,7 @@ if (mainTitle) {
     });
 }
 
+
 // Mobile Responsive Hamburger Menu Logic
 const hamIcon = document.querySelector("#hamIcon");
 const navUl = document.querySelector("nav ul");
@@ -77,7 +78,7 @@ if (hamIcon && navUl) {
         }
     });
 
-    // Safe auto-close: Targets any clickable button or link directly inside the nav menu list
+    //Targets any clickable button or link directly inside the nav menu list
     const menuButtons = navUl.querySelectorAll("button, a");
     menuButtons.forEach(btn => {
         btn.addEventListener("click", function() {
@@ -217,9 +218,9 @@ function stopGame() {
 function spawnRubbish() {
     if (!arena) return;
     const trashImages = [
-        'images/plastic-bottle.jpg', 
-        'images/bag.jpg', 
-        'images/can.jpg'
+        'images/plastic-bottle.png', 
+        'images/bag.png', 
+        'images/can.png'
     ];
     
     const rubbish = document.createElement('img');
@@ -285,9 +286,124 @@ function runGameEngine() {
     }
 }
 
-/* ==========================================================================
-   INITIALIZATION RUNNERS (CALLED AT THE ABSOLUTE BOTTOM)
-   ========================================================================== */
+//FOR THE QUIZ ONLY
+const btnSubmit = document.querySelector("#btnSubmit");  
+const btnRetry = document.querySelector("#btnRetry"); // Select the new retry button
+const scorebox = document.querySelector("#scorebox");
+var score = 0;
+
+// Correct dolphin answers matching your HTML inputs
+const corrAnsArray = [
+    "Over 20 years",
+    "The lower jaw",
+    "Common Bottlenose Dolphin",
+    "Unfused neck vertebrae",
+    "Underwater sound pollution"
+];
+
+function CheckAns() {    
+    score = 0; // reset score to 0
+    
+    for (let i = 0; i < corrAnsArray.length; i++) {
+        CheckOneQn(i + 1, corrAnsArray[i]);
+    }
+    
+    scorebox.innerHTML = "Score: " + score;
+    
+    // Hide Submit button and show the Retry button instead
+    btnSubmit.style.display = "none";
+    btnRetry.style.display = "inline-block";
+}
+
+function CheckOneQn(qnNo, CorrAns) {
+    const checkedRadio = document.querySelector("input[name='q" + qnNo + "']:checked");
+    const allRadiosInQn = document.querySelectorAll("input[name='q" + qnNo + "']");
+    
+    // Disable all options for this question so user cannot change answer post-submission
+    allRadiosInQn.forEach(radio => radio.disabled = true);
+    
+    if (checkedRadio) {
+        let qTemp = checkedRadio.value;
+        if (qTemp === CorrAns) {
+            score++;
+        }
+    }
+}
+
+// Reset everything to the original starting state
+function ResetQuiz() {
+    score = 0;
+    scorebox.innerHTML = "Score: 0";
+    
+    // Uncheck, re-enable, and strip any color styles from all radio buttons
+    const allRadios = document.querySelectorAll("input[type='radio']");
+    allRadios.forEach(radio => {
+        radio.checked = false;
+        radio.disabled = false;
+    });
+
+    // Toggle button visibilities back to normal
+    btnSubmit.style.display = "inline-block";
+    btnRetry.style.display = "none";
+}
+
+// Attach event listeners
+btnSubmit.addEventListener("click", CheckAns);
+btnRetry.addEventListener("click", ResetQuiz);
+
+
+
+
+//THIS IS FOR THE AUDIO FOR THE DOLPHIN SOUND
+
+
+//  FIRST AUDIO: DOLPHIN WHISTLE
+
+const dolphinBtn = document.getElementById("dolphinPlayBtn");
+const dolphinAudio = new Audio("audio/Dol.mp3");
+var listenCount = 0;
+
+function playDolphinWhistle() {
+  dolphinAudio.currentTime = 0; 
+  dolphinAudio.play(); 
+  listenCount++;
+  console.log("Dolphin whistle played " + listenCount + " times.");
+}
+
+if (dolphinBtn) {
+  dolphinBtn.addEventListener("click", playDolphinWhistle);
+}
+
+
+// SECOND AUDIO: BURST-PULSE SOUNDS
+
+const burstPulseBtn = document.getElementById("burstPulsePlayBtn");
+const burstPulseAudio = new Audio("audio/Burst.mp3");
+var burstListenCount = 0;
+
+function playBurstPulse() {
+  // Restart the sound from the beginning if clicked rapidly
+  burstPulseAudio.currentTime = 0; 
+  // Play the audio
+  burstPulseAudio.play(); 
+  
+  burstListenCount++;
+  console.log("Burst-pulse sound played " + burstListenCount + " times.");
+}
+
+// Link the new button click to the new function
+if (burstPulseBtn) {
+  burstPulseBtn.addEventListener("click", playBurstPulse);
+}
+
+
+// Link the dolphin button click to the play function
+dolphinBtn.addEventListener("click", playDolphinWhistle);
+
+
+
+
+/* INITIALIZATION RUNNERS (CALLED AT THE ABSOLUTE BOTTOM)*/
 // Hide everything initially
 hideall();
 
