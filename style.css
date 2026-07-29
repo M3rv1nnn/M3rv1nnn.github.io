@@ -33,6 +33,25 @@ body {
     padding-left: 0;     
 }
 
+#QRCODE{
+    display: block;       
+    margin: 20px auto;     
+    max-width: 100%;     
+    width: 200px;          
+    height: auto;         
+    padding-left: 0;
+	padding-top:100px;
+}
+#QRTitle{
+	color:White;
+    font-weight: bold;
+    display: block;       
+    margin: 20px auto;        
+    width: 200px;          
+    height: auto;         
+    padding-left: 0;
+
+}
 
 h2{color:white; font-size: 2.5rem;}
 #semi-title{color:white;font-size: 20px;}
@@ -87,7 +106,11 @@ ul{ font-size: 1.1rem;}
     nav ul{
         display:none;
     }
-
+   #QRCODE,
+   #QRTitle
+   {
+        display:none;
+    }
 }
 
 nav ul.menuShow{
