@@ -403,6 +403,10 @@ dolphinBtn.addEventListener("click", playDolphinWhistle);
 
 
 
+
+
+
+
 /* INITIALIZATION RUNNERS (CALLED AT THE ABSOLUTE BOTTOM)*/
 // Hide everything initially
 hideall();
