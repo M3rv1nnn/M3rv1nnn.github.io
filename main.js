@@ -148,8 +148,9 @@ if (arena) {
 // Calculates tracking positions for tracking dragging movements
 function handleTouchMove(e) {
     if (!arena || !dolphin) return;
+    if (!e.touches || e.touches.length === 0) return;
     const arenaRect = arena.getBoundingClientRect();
-    const touch = e.touches;
+    const touch = e.touches[0];
     const dolphinWidth = dolphin.clientWidth;
     
     // Pinpoints position relative to the left wall of the game box, centering the finger
