@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 const page1btn = document.querySelector("#page1btn");
 const page2btn = document.querySelector("#page2btn");
 const page3btn = document.querySelector("#page3btn");
@@ -61,7 +63,6 @@ if (mainTitle) {
     });
 }
 
-
 // Mobile Responsive Hamburger Menu Logic
 const hamIcon = document.querySelector("#hamIcon");
 const navUl = document.querySelector("nav ul");
@@ -88,10 +89,7 @@ if (hamIcon && navUl) {
     });
 }
 
-
-
-
-//DOLPHIN GAMEE
+// DOLPHIN GAMEE
 
 const arena = document.getElementById('game-arena');
 const dolphin = document.getElementById('player-dolphin');
@@ -151,17 +149,15 @@ if (arena) {
 function handleTouchMove(e) {
     if (!arena || !dolphin) return;
     const arenaRect = arena.getBoundingClientRect();
-    const touch = e.touches[0];
+    const touch = e.touches;
+    const dolphinWidth = dolphin.clientWidth;
     
-    // Pinpoints horizontal tap coordinates relative to the left wall of the game box
-    let touchX = touch.clientX - arenaRect.left;
+    // Pinpoints position relative to the left wall of the game box, centering the finger
+    let touchX = touch.clientX - arenaRect.left - (dolphinWidth / 2);
     
     // Bounds check to stop the dolphin tracking past margins immediately
-    const dolphinWidth = dolphin.clientWidth;
-    const halfWidth = dolphinWidth / 2;
-    
-    if (touchX < halfWidth) touchX = halfWidth;
-    if (touchX > arenaRect.width - halfWidth) touchX = arenaRect.width - halfWidth;
+    if (touchX < 0) touchX = 0;
+    if (touchX > arenaRect.width - dolphinWidth) touchX = arenaRect.width - dolphinWidth;
     
     dolphinX = touchX;
     dolphin.style.left = dolphinX + 'px';
@@ -182,25 +178,28 @@ function startGame() {
     isPlaying = true;
     startStopBtn.textContent = "Stop Game";
     gameSeconds = 0;
-    timerDisplay.textContent = `Time: ${gameSeconds}s`;
+    timerDisplay.textContent = "Time: " + gameSeconds + "s";
     
-    // Reset inputs & clean trash
-    for (let k in activeKeys) activeKeys[k] = false;
+    // Reset inputs & clean trash using prototype-safe iteration
+    Object.keys(activeKeys).forEach(function(k) {
+        activeKeys[k] = false;
+    });
+    
     isDragging = false;
     rubbishArray.forEach(item => item.remove());
     rubbishArray = [];
 
-    // Center dolphin position
+    // Center dolphin position perfectly
     if (arena && dolphin) {
         const arenaRect = arena.getBoundingClientRect();
-        dolphinX = arenaRect.width / 2;
+        dolphinX = (arenaRect.width - dolphin.clientWidth) / 2;
         dolphin.style.left = dolphinX + 'px';
     }
 
     // Start loops
     timerInterval = setInterval(() => {
         gameSeconds++;
-        timerDisplay.textContent = `Time: ${gameSeconds}s`;
+        timerDisplay.textContent = "Time: " + gameSeconds + "s";
     }, 1000);
 
     spawnInterval = setInterval(spawnRubbish, 800);
@@ -242,18 +241,17 @@ function runGameEngine() {
 
     // Keyboard movement engine updates (Runs if no active mobile finger drags override it)
     if (!isDragging) {
-        if (activeKeys['a'] || activeKeys['arrowleft']) dolphinX -= moveSpeed;
-        if (activeKeys['d'] || activeKeys['arrowright']) dolphinX += moveSpeed;
+        if (activeKeys.a || activeKeys.arrowleft) dolphinX -= moveSpeed;
+        if (activeKeys.d || activeKeys.arrowright) dolphinX += moveSpeed;
 
         // Arena wall boundaries
-        const halfWidth = dolphinWidth / 2;
-        if (dolphinX < halfWidth) dolphinX = halfWidth;
-        if (dolphinX > arenaWidth - halfWidth) dolphinX = arenaWidth - halfWidth;
+        if (dolphinX < 0) dolphinX = 0;
+        if (dolphinX > arenaWidth - dolphinWidth) dolphinX = arenaWidth - dolphinWidth;
 
         dolphin.style.left = dolphinX + 'px';
     }
 
-    // Trash drops & physics hitbox engine
+      // Trash drops & physics hitbox engine
     const dolphinRect = dolphin.getBoundingClientRect();
 
     for (let i = rubbishArray.length - 1; i >= 0; i--) {
@@ -273,7 +271,7 @@ function runGameEngine() {
             itemRect.top < dolphinRect.bottom
         ) {
             const finalScore = gameSeconds * 10; 
-            alert(`Game Over! You were hit by rubbish.\nYour Score: ${finalScore} points.`);
+            alert("Game Over! You were hit by rubbish.\nYour Score: " + finalScore + " points.");
             stopGame();
             break;
         }
@@ -286,14 +284,16 @@ function runGameEngine() {
     }
 }
 
-//FOR THE QUIZ ONLY
+// FOR THE QUIZ ONLY
 const btnSubmit = document.querySelector("#btnSubmit");  
-const btnRetry = document.querySelector("#btnRetry"); // Select the new retry button
+const btnRetry = document.querySelector("#btnRetry"); 
 const scorebox = document.querySelector("#scorebox");
 var score = 0;
 
-//so retry button show after pressing submit
-btnRetry.style.display = "none"; 
+// Hide retry button initially if it exists
+if (btnRetry) {
+    btnRetry.style.display = "none"; 
+}
 
 // Correct dolphin answers matching your HTML inputs
 const corrAnsArray = [
@@ -305,40 +305,38 @@ const corrAnsArray = [
 ];
 
 function CheckAns() {    
-    score = 0; // reset score to 0
+    score = 0; 
     
     for (let i = 0; i < corrAnsArray.length; i++) {
-        CheckOneQn(i + 1, corrAnsArray[i]);
-    }
-    
-    scorebox.innerHTML = "Score: " + score;
-    
-    // Hide Submit button and show the Retry button instead
-    btnSubmit.style.display = "none";
-    btnRetry.style.display = "inline-block";
-}
-
-function CheckOneQn(qnNo, CorrAns) {
-    const checkedRadio = document.querySelector("input[name='q" + qnNo + "']:checked");
-    const allRadiosInQn = document.querySelectorAll("input[name='q" + qnNo + "']");
-    
-    // Disable all options for this question so user cannot change answer post-submission
-    allRadiosInQn.forEach(radio => radio.disabled = true);
-    
-    if (checkedRadio) {
-        let qTemp = checkedRadio.value;
-        if (qTemp === CorrAns) {
+        const qnNo = i + 1;
+        const checkedRadio = document.querySelector("input[name='q" + qnNo + "']:checked");
+        const allRadiosInQn = document.querySelectorAll("input[name='q" + qnNo + "']");
+        
+        // Disable choices
+        allRadiosInQn.forEach(radio => radio.disabled = true);
+        
+        if (checkedRadio && checkedRadio.value === corrAnsArray[i]) {
             score++;
         }
     }
+    
+    if (scorebox) {
+        scorebox.innerHTML = "Score: " + score;
+    }
+    
+    // Toggle button visibility safely
+    if (btnSubmit) btnSubmit.style.display = "none";
+    if (btnRetry) btnRetry.style.display = "inline-block";
 }
 
 // Reset everything to the original starting state
 function ResetQuiz() {
     score = 0;
-    scorebox.innerHTML = "Score: 0";
+    if (scorebox) {
+        scorebox.innerHTML = "Score: 0";
+    }
     
-    // Uncheck, re-enable, and strip any color styles from all radio buttons
+    // Uncheck and re-enable all radio buttons
     const allRadios = document.querySelectorAll("input[type='radio']");
     allRadios.forEach(radio => {
         radio.checked = false;
@@ -346,68 +344,49 @@ function ResetQuiz() {
     });
 
     // Toggle button visibilities back to normal
-    btnSubmit.style.display = "inline-block";
-    btnRetry.style.display = "none";
+    if (btnSubmit) btnSubmit.style.display = "inline-block";
+    if (btnRetry) btnRetry.style.display = "none";
 }
 
-// Attach event listeners
-btnSubmit.addEventListener("click", CheckAns);
-btnRetry.addEventListener("click", ResetQuiz);
+// Attach quiz event listeners safely
+if (btnSubmit) btnSubmit.addEventListener("click", CheckAns);
+if (btnRetry) btnRetry.addEventListener("click", ResetQuiz);
 
 
+// THIS IS FOR THE AUDIO FOR THE DOLPHIN SOUND
 
-
-//THIS IS FOR THE AUDIO FOR THE DOLPHIN SOUND
-
-
-//  FIRST AUDIO: DOLPHIN WHISTLE
-
+// FIRST AUDIO: DOLPHIN WHISTLE
 const dolphinBtn = document.getElementById("dolphinPlayBtn");
 const dolphinAudio = new Audio("audio/Dol.mp3");
 var listenCount = 0;
 
 function playDolphinWhistle() {
-  dolphinAudio.currentTime = 0; 
-  dolphinAudio.play(); 
-  listenCount++;
-  console.log("Dolphin whistle played " + listenCount + " times.");
+    dolphinAudio.currentTime = 0; 
+    dolphinAudio.play().catch(err => console.log("Audio playback delayed or blocked:", err)); 
+    listenCount++;
+    console.log("Dolphin whistle played " + listenCount + " times.");
 }
 
 if (dolphinBtn) {
-  dolphinBtn.addEventListener("click", playDolphinWhistle);
+    dolphinBtn.addEventListener("click", playDolphinWhistle);
 }
 
 
 // SECOND AUDIO: BURST-PULSE SOUNDS
-
 const burstPulseBtn = document.getElementById("burstPulsePlayBtn");
 const burstPulseAudio = new Audio("audio/Burst.mp3");
 var burstListenCount = 0;
 
 function playBurstPulse() {
-  // Restart the sound from the beginning if clicked rapidly
-  burstPulseAudio.currentTime = 0; 
-  // Play the audio
-  burstPulseAudio.play(); 
-  
-  burstListenCount++;
-  console.log("Burst-pulse sound played " + burstListenCount + " times.");
+    burstPulseAudio.currentTime = 0; 
+    burstPulseAudio.play().catch(err => console.log("Audio playback delayed or blocked:", err)); 
+    burstListenCount++;
+    console.log("Burst-pulse sound played " + burstListenCount + " times.");
 }
 
-// Link the new button click to the new function
 if (burstPulseBtn) {
-  burstPulseBtn.addEventListener("click", playBurstPulse);
+    burstPulseBtn.addEventListener("click", playBurstPulse);
 }
-
-
-// Link the dolphin button click to the play function
-dolphinBtn.addEventListener("click", playDolphinWhistle);
-
-
-
-
-
-
 
 
 /* INITIALIZATION RUNNERS (CALLED AT THE ABSOLUTE BOTTOM)*/
