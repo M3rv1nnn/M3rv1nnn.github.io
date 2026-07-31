@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 
 const page1btn = document.querySelector("#page1btn");
 const page2btn = document.querySelector("#page2btn");
@@ -145,16 +144,21 @@ if (arena) {
     });
 }
 
-// Calculates tracking positions for tracking dragging movements
+// Calculates tracking positions for tracking dragging movements safely on mobile viewport scales
 function handleTouchMove(e) {
     if (!arena || !dolphin) return;
     if (!e.touches || e.touches.length === 0) return;
+    
     const arenaRect = arena.getBoundingClientRect();
     const touch = e.touches[0];
     const dolphinWidth = dolphin.clientWidth;
     
+    // Account for absolute window offsets to keep movement accurate
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const arenaLeftPage = arenaRect.left + scrollLeft;
+    
     // Pinpoints position relative to the left wall of the game box, centering the finger
-    let touchX = touch.clientX - arenaRect.left - (dolphinWidth / 2);
+    let touchX = touch.pageX - arenaLeftPage - (dolphinWidth / 2);
     
     // Bounds check to stop the dolphin tracking past margins immediately
     if (touchX < 0) touchX = 0;
@@ -252,12 +256,12 @@ function runGameEngine() {
         dolphin.style.left = dolphinX + 'px';
     }
 
-      // Trash drops & physics hitbox engine
+    // Trash drops & physics hitbox engine
     const dolphinRect = dolphin.getBoundingClientRect();
 
     for (let i = rubbishArray.length - 1; i >= 0; i--) {
         const item = rubbishArray[i];
-        let currentTop = parseFloat(item.style.top);
+        let currentTop = parseFloat(item.style.top) || 0;
         
         currentTop += 4; 
         item.style.top = currentTop + 'px';
@@ -284,7 +288,6 @@ function runGameEngine() {
         }
     }
 }
-
 // FOR THE QUIZ ONLY
 const btnSubmit = document.querySelector("#btnSubmit");  
 const btnRetry = document.querySelector("#btnRetry"); 
