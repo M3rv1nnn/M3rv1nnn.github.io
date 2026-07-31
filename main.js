@@ -292,6 +292,9 @@ const btnRetry = document.querySelector("#btnRetry"); // Select the new retry bu
 const scorebox = document.querySelector("#scorebox");
 var score = 0;
 
+//so retry button show after pressing submit
+btnRetry.style.display = "none"; 
+
 // Correct dolphin answers matching your HTML inputs
 const corrAnsArray = [
     "Over 20 years",
