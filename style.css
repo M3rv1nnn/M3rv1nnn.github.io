@@ -94,7 +94,6 @@ ul{ font-size: 1.1rem;}
 }
 
 @media (max-width:800px){
-
     nav ul li{
         display:block;
     }
@@ -110,6 +109,11 @@ ul{ font-size: 1.1rem;}
    #QRTitle
    {
         display:none;
+    }
+body {
+        background-image: url('images/Background.jpg');
+        background-attachment: scroll; 
+        background-size: 100% 100%;
     }
 }
 
