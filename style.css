@@ -267,7 +267,7 @@ details.show {
 /* QUIZ SECTION STYLING */
 
 #Quiz{color:white;}
-
+.Rules{color:white; font-size: 1.4rem;}
 
 fieldset {
     border: none;
