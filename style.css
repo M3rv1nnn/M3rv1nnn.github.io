@@ -56,6 +56,7 @@ body {
 h2{color:white; font-size: 2.5rem;}
 #semi-title{color:white;font-size: 20px;}
 #main-title{text-align:center;background-color:#00B4D8;color:white; cursor: pointer;font-size: 3.1rem;}
+.semi-title{color:white;font-size: 20px;}
 
 #button{display: flex;
   justify-content: center;
@@ -140,7 +141,7 @@ summary {
     outline: none;
 }
 
-#label {
+.label {
     font-weight: bold;
 }
 /*navigation*/
@@ -335,7 +336,7 @@ fieldset label {
 /*FOR THE CLICKABLE LINKS BELOW THE PAGES*/
 
 
-#Links{
+.links{
     color:white ;          
    font-size: 30px;  
 font-weight: bold;   
